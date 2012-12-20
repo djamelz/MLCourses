@@ -25,7 +25,7 @@ htheta = sigmoid( X * theta);
 %size((X'* (htheta - y)))
 %pause;
 
-J = (1/m * ( -y' * log(htheta) - (1-y')* log(1 - htheta))) + (lambda/2*m * sum(theta(2:end).^2));
+J = (1/m * ( -y' * log(htheta) - (1-y')* log(1 - htheta))) + ((lambda/(2*m)) * sum(theta(2:end).^2));
 
 
 grad = 1/m * (X'* (htheta - y));
