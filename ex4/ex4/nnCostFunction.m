@@ -62,23 +62,63 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%%%%%%%%feedforward & cost function
+y_k = zeros(num_labels,size(y,1));	
+
+for i=1:size(y,1)
+	y_k(y(i),i) = 1;
+end
 
 
 
+a1 = [ones(size(X,1),1) X];
+z2 = a1 * Theta1';
+a2 = [ones(size(z2,1),1) sigmoid(z2)];
+z3 = a2 * Theta2';
+h = sigmoid(z3);
 
 
+%y_k(:,1)
+%h(1,:)
+
+J = (1/m) * sum(sum((-y_k' .* (log(h))) - ((1-y_k').*(log(1-h)))));
+
+reg =(lambda/(2*m)) * ((sum(sum([Theta1(1:end,2:end).^2]))) + (sum(sum([Theta2(1:end,2:end).^2]))));
+
+J = J + reg;
+%%%%%%%%%%%%
+
+%%%%%%%%backpropagation
+
+%Step 1 to 4
+d3 = h' - y_k;
+
+%size(Theta2)
+%size(d3')
+%size(sigmoidGradient(z2))
+%pause
+d2 = Theta2' * d3 .* sigmoidGradient([ones(size(z2,1),1) z2])';
+
+%size(d2)
+%size(a1)
+Theta1_grad = d2(2:end,:)*a1;
+%size(Theta1_grad)
+%pause
 
 
+%size(d3)
+%size(a2)
+Theta2_grad = d3*a2;
+%size(Theta2_grad)
+%pause
+
+Theta1_grad = ((1/m)*Theta1_grad) + ([zeros(size(Theta1,1),1) ((lambda/m)*Theta1(:,2:end))]);
+Theta2_grad = ((1/m)*Theta2_grad) + ([zeros(size(Theta2,1),1) ((lambda/m)*Theta2(:,2:end))]);
 
 
+%
 
-
-
-
-
-
-
-
+%%%%%%%%%%%%
 
 % -------------------------------------------------------------
 
