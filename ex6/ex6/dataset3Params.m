@@ -23,12 +23,29 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
-
-
-
-
-
+%findBestValues(X, y, Xval, yval);
+C = 1;
+sigma = 0.1;
 
 % =========================================================================
 
+end
+
+function [C, sigma] = findBestValues(X, y, Xval, yval)
+	value = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+
+	minPError = 1;
+
+	for i = value
+		for j = value
+			model= svmTrain(X, y, i, @(x1, x2) gaussianKernel(x1, x2, j));
+			predictions = svmPredict(model, Xval);
+			pError = mean(double(predictions ~= yval));
+			if pError < minPError
+				C = i
+				sigma = j
+				minPError = pError
+			end
+		end
+	end
 end
