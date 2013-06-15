@@ -27,9 +27,10 @@ centroids = zeros(K, n);
 %
 
 
-
-
-
+for i=1:size(centroids, 1)
+	filteredX = X(find(idx == i), :);
+	centroids(i, :) =  sum(filteredX)./size(filteredX, 1);
+end
 
 
 
